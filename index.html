@@ -16,254 +16,139 @@
     --grad3:#fb923c;
     --grad4:#facc15;
     --gold:#f4b740;
+    --green:#22c55e;
     --text:#f5f6fa;
     --muted:#8a90a3;
     --win:#1f2a44;
     --win-border:#3a4566;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter',sans-serif;
-    padding:18px;
-  }
-  .shell{
-    max-width:1180px;
-    margin:0 auto;
-    border-radius:28px;
-    padding:3px;
-    background:linear-gradient(120deg,var(--grad1),var(--grad2) 35%,var(--grad3) 70%,var(--grad4));
-  }
-  .inner{
-    background:var(--card);
-    border-radius:26px;
-    padding:28px 26px 40px;
-  }
-  header{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:baseline;
-    gap:14px;
-    margin-bottom:6px;
-  }
-  h1{
-    font-family:'Anton',sans-serif;
-    font-weight:400;
-    letter-spacing:0.5px;
-    font-size:clamp(32px,5vw,56px);
-    margin:0;
-    line-height:0.95;
-  }
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:18px;}
+  .shell{max-width:1180px;margin:0 auto;border-radius:28px;padding:3px;
+    background:linear-gradient(120deg,var(--grad1),var(--grad2) 35%,var(--grad3) 70%,var(--grad4));}
+  .inner{background:var(--card);border-radius:26px;padding:28px 26px 40px;}
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:14px;margin-bottom:6px;}
+  h1{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:0.5px;font-size:clamp(32px,5vw,56px);margin:0;line-height:0.95;}
   h1 span{color:var(--gold);}
   .subtitle{color:var(--muted);font-size:13px;margin:0 0 22px;}
 
-  .tabs{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:26px;
-  }
-  .tab{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    border:1px solid var(--line);
-    background:#161b28;
-    color:var(--text);
-    padding:7px 8px 7px 16px;
-    border-radius:999px;
-    font-weight:700;
-    font-size:13px;
-    transition:all .15s ease;
-  }
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;}
+  .tab{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#161b28;color:var(--text);
+    padding:7px 8px 7px 16px;border-radius:999px;font-weight:700;font-size:13px;transition:all .15s ease;}
   .tab:hover{border-color:var(--grad2);}
-  .tab.active{
-    background:linear-gradient(120deg,var(--grad1),var(--grad2));
-    border-color:transparent;
-    color:#fff;
-  }
+  .tab.active{background:linear-gradient(120deg,var(--grad1),var(--grad2));border-color:transparent;color:#fff;}
   .tab-name{cursor:pointer;}
-  .tab-edit{
-    border:none;
-    background:rgba(255,255,255,.12);
-    color:inherit;
-    width:22px;
-    height:22px;
-    border-radius:50%;
-    font-size:11px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+  .tab-edit{border:none;background:rgba(255,255,255,.12);color:inherit;width:22px;height:22px;border-radius:50%;
+    font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .tab-edit:hover{background:rgba(255,255,255,.25);}
 
-  h2.section{
-    font-family:'Anton',sans-serif;
-    font-weight:400;
-    font-size:20px;
-    letter-spacing:0.5px;
-    margin:30px 0 4px;
-    color:var(--text);
-  }
+  h2.section{font-family:'Anton',sans-serif;font-weight:400;font-size:20px;letter-spacing:0.5px;margin:30px 0 4px;}
   .section-note{color:var(--muted);font-size:12px;margin:0 0 14px;}
 
-  .groups-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px 10px;
-  }
+  .groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 10px;}
   @media(max-width:760px){.groups-grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:480px){.groups-grid{grid-template-columns:1fr;}}
 
-  .match{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:#0e1320;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:7px 10px;
-    font-size:13px;
-  }
-  .match .team{display:flex;align-items:center;gap:7px;min-width:0;}
-  .match .flag{font-size:17px;}
-  .match .vs{
-    font-size:10px;
-    font-weight:800;
-    color:var(--muted);
-    background:#1b2133;
-    padding:2px 7px;
-    border-radius:999px;
-    margin:0 6px;
-  }
-  .match .name{
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
+  .match{background:#0e1320;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;}
+  .match .row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .teampick{display:flex;align-items:center;gap:7px;min-width:0;flex:1;padding:4px 6px;border-radius:8px;cursor:pointer;
+    border:1px solid transparent;}
+  .teampick:hover{background:#161c2c;}
+  .teampick.win{background:rgba(34,197,94,.16);border-color:var(--green);}
+  .teampick.draw{background:rgba(244,183,64,.14);border-color:var(--gold);}
+  .flag{font-size:16px;flex-shrink:0;}
+  .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;}
+  .vs{font-size:10px;font-weight:800;color:var(--muted);background:#1b2133;padding:2px 7px;border-radius:999px;flex-shrink:0;}
+  .scorerow{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+  .scorerow select{
+    background:#0c1019;border:1px solid var(--line);color:var(--text);font-weight:700;font-size:13px;
+    border-radius:6px;padding:3px 6px;width:48px;text-align:center;cursor:pointer;}
+  .scorerow .dash{color:var(--muted);font-weight:800;}
+  .draw-btn{font-size:10px;color:var(--muted);background:transparent;border:1px dashed var(--line);border-radius:999px;
+    padding:2px 8px;cursor:pointer;margin-left:4px;}
+  .draw-btn:hover{border-color:var(--gold);color:var(--gold);}
 
-  .bracket-col-title{
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    color:var(--muted);
-    font-weight:700;
-    margin:0 0 8px 4px;
-  }
-  .bracket{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:14px;
-    margin-top:6px;
-  }
+  .bracket-col-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin:0 0 8px 4px;}
+  .bracket{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:6px;}
   @media(max-width:980px){.bracket{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:560px){.bracket{grid-template-columns:1fr;}}
-
   .bcol{display:flex;flex-direction:column;gap:10px;}
-  .slot{
-    background:var(--win);
-    border:1px solid var(--win-border);
-    border-radius:12px;
-    padding:8px;
-  }
+  .slot{background:var(--win);border:1px solid var(--win-border);border-radius:12px;padding:8px;}
   .slot .pid{font-size:10px;color:var(--muted);font-weight:700;margin-bottom:6px;letter-spacing:0.5px;}
-  .pickrow{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    background:#0c1019;
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:5px 7px;
-    margin-bottom:5px;
-    cursor:pointer;
-    transition:background .12s ease;
-  }
-  .pickrow:last-child{margin-bottom:0;}
+  .pickrow{display:flex;align-items:center;gap:6px;background:#0c1019;border:1px solid var(--line);border-radius:8px;
+    padding:5px 7px;margin-bottom:5px;cursor:pointer;transition:background .12s ease;}
+  .pickrow:last-of-type{margin-bottom:0;}
   .pickrow:hover{background:#161c2c;}
-  .pickrow.chosen{
-    background:linear-gradient(120deg,rgba(124,58,237,.35),rgba(6,182,212,.35));
-    border-color:var(--grad2);
-  }
+  .pickrow.chosen{background:linear-gradient(120deg,rgba(124,58,237,.35),rgba(6,182,212,.35));border-color:var(--grad2);}
   .pickrow .flag{font-size:15px;width:18px;text-align:center;}
-  .pickrow select{
-    background:transparent;
-    border:none;
-    color:var(--text);
-    font-size:12px;
-    font-weight:600;
-    width:100%;
-    cursor:pointer;
-  }
-  .pickrow select:focus{outline:none;}
-  .pickrow .placeholder-label{
-    font-size:12px;
-    font-weight:700;
-    color:var(--muted);
-  }
+  .pickrow .placeholder-label{font-size:12px;font-weight:700;color:var(--muted);flex:1;}
   .pickrow.chosen .placeholder-label{color:var(--text);}
-  .pickrow input[type=radio]{accent-color:var(--grad2);margin:0;}
+  .bracket-score{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px;}
+  .bracket-score select{background:#0c1019;border:1px solid var(--line);color:var(--text);font-weight:700;font-size:12px;
+    border-radius:6px;padding:2px 4px;width:40px;text-align:center;}
 
-  .final-card{
-    grid-column:1/-1;
-    background:linear-gradient(120deg,rgba(244,183,64,.14),rgba(124,58,237,.14));
-    border:1px solid var(--gold);
-    border-radius:14px;
-    padding:14px;
-    margin-top:4px;
-  }
-  .final-card .label{
-    font-family:'Anton',sans-serif;
-    font-size:22px;
-    color:var(--gold);
-    margin-bottom:8px;
-  }
-  .bronze-card{
-    grid-column:1/-1;
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:12px;
-    background:#0e1320;
-  }
+  .final-card{grid-column:1/-1;background:linear-gradient(120deg,rgba(244,183,64,.14),rgba(124,58,237,.14));
+    border:1px solid var(--gold);border-radius:14px;padding:14px;margin-top:4px;}
+  .final-card .label{font-family:'Anton',sans-serif;font-size:22px;color:var(--gold);margin-bottom:8px;}
+  .bronze-card{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:12px;background:#0e1320;}
   .bronze-card .label{font-weight:800;font-size:13px;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px;}
 
+  .results-list{max-height:340px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:8px;}
+  .results-row{display:grid;grid-template-columns:1fr auto auto auto 1fr;align-items:center;gap:8px;
+    padding:5px 6px;border-bottom:1px solid var(--line);font-size:12px;}
+  .results-row:last-child{border-bottom:none;}
+  .results-row .rname{display:flex;align-items:center;gap:6px;}
+  .results-row select{background:#0c1019;border:1px solid var(--line);color:var(--text);font-weight:700;
+    border-radius:6px;padding:2px 4px;width:42px;text-align:center;}
+  .results-row .rname.right{justify-content:flex-end;text-align:right;}
+
+  table.leader{width:100%;border-collapse:collapse;font-size:13px;}
+  table.leader th, table.leader td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);}
+  table.leader th{color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
+  table.leader tr.lead td{background:rgba(244,183,64,.12);}
+  table.leader td.num{font-weight:800;}
+
   footer{margin-top:30px;color:var(--muted);font-size:11px;text-align:center;}
-  .resetbtn{
-    border:1px solid var(--line);
-    background:transparent;
-    color:var(--muted);
-    padding:6px 12px;
-    border-radius:999px;
-    font-size:11px;
-    cursor:pointer;
-    margin-top:14px;
-  }
+  .resetbtn{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 12px;border-radius:999px;
+    font-size:11px;cursor:pointer;margin-top:14px;}
   .resetbtn:hover{border-color:#ef4444;color:#ef4444;}
+  .rules-box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--muted);margin-bottom:16px;}
+  .rules-box b{color:var(--text);}
 </style>
 </head>
 <body>
 <div class="shell"><div class="inner">
 
-  <header>
-    <h1>104 <span>MATCHES</span></h1>
-  </header>
+  <header><h1>104 <span>MATCHES</span></h1></header>
   <p class="subtitle">🏆 FIFA WORLD CUP 2026 — Bracket de cada jugador</p>
 
   <div class="tabs" id="tabs"></div>
 
-  <h2 class="section">Fase de grupos</h2>
-  <p class="section-note">Los 72 partidos confirmados (igual para todos — esto no se pronostica, ya está definido).</p>
+  <div class="rules-box">
+    Tocá un país (o su bandera) para elegirlo como ganador del partido — el marcador se completa solo y lo podés
+    ajustar con los desplegables. Empate: tocá el botón "empate". Lo que elijas en la fase de grupos arma sola la
+    tabla de cada grupo y manda a tus clasificados a Dieciseisavos.
+  </div>
+
+  <h2 class="section">Fase de grupos — tu pronóstico</h2>
+  <p class="section-note">72 partidos. Elegí ganador (o empate) y el marcador — esto arma tu tabla de grupos y define quién avanza.</p>
   <div class="groups-grid" id="groupsGrid"></div>
 
-  <h2 class="section">Eliminación directa — tu pronóstico</h2>
-  <p class="section-note">Elegí el equipo en cada cruce de Dieciseisavos; el ganador avanza solo a la siguiente ronda. Se guarda automáticamente.</p>
+  <h2 class="section">Eliminación directa</h2>
+  <p class="section-note">Tus clasificados de grupo entran solos acá. Elegí ganador y marcador en cada cruce para avanzar a la siguiente ronda.</p>
   <div class="bracket" id="bracket"></div>
 
-  <button class="resetbtn" id="resetBtn">Borrar pronóstico de este jugador</button>
-  <footer>Datos compartidos entre los 5 — cada uno elige su pestaña y arma su bracket.</footer>
+  <button class="resetbtn" id="resetBtn">Borrar todo el pronóstico de este jugador</button>
+
+  <h2 class="section">Resultados oficiales (cargá acá cuando se jueguen)</h2>
+  <p class="section-note">Esto es compartido entre los 5. Apenas termine un partido, alguien carga el marcador real acá.</p>
+  <div class="results-list" id="resultsList"></div>
+
+  <h2 class="section">Tabla de resultados y puntos</h2>
+  <p class="section-note">3 puntos si acertaste el marcador exacto · 1 punto si acertaste quién ganaba o el empate · 0 si no.</p>
+  <table class="leader" id="leaderTable"></table>
+
+  <footer>Hecho para los 5 — cada uno elige su pestaña y arma su pronóstico.</footer>
 
 </div></div>
 
@@ -282,34 +167,50 @@ const FLAGS = {
   "Portugal":"🇵🇹","RD Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
   "Inglaterra":"🏴","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
 };
-const ALL_TEAMS = Object.keys(FLAGS).sort((a,b)=>a.localeCompare(b,'es'));
 const PLAYER_IDS = ["p1","p2","p3","p4","p5"];
 
 const GROUP_MATCHES = [
-["México","Sudáfrica"],["Corea del Sur","República Checa"],["Canadá","Bosnia y Herzegovina"],
-["Estados Unidos","Paraguay"],["Catar","Suiza"],["Brasil","Marruecos"],["Haití","Escocia"],
-["Australia","Turquía"],["Alemania","Curazao"],["Países Bajos","Japón"],["Costa de Marfil","Ecuador"],
-["Suecia","Túnez"],["España","Cabo Verde"],["Bélgica","Egipto"],["Arabia Saudita","Uruguay"],
-["Irán","Nueva Zelanda"],["Francia","Senegal"],["Irak","Noruega"],["Argentina","Argelia"],
-["Austria","Jordania"],["Portugal","RD Congo"],["Inglaterra","Croacia"],["Ghana","Panamá"],
-["Uzbekistán","Colombia"],["República Checa","Sudáfrica"],["Suiza","Bosnia y Herzegovina"],
-["Canadá","Catar"],["México","Corea del Sur"],["Estados Unidos","Australia"],["Escocia","Marruecos"],
-["Brasil","Haití"],["Turquía","Paraguay"],["Países Bajos","Suecia"],["Alemania","Costa de Marfil"],
-["Ecuador","Curazao"],["Túnez","Japón"],["España","Arabia Saudita"],["Bélgica","Irán"],
-["Uruguay","Cabo Verde"],["Nueva Zelanda","Egipto"],["Argentina","Austria"],["Francia","Irak"],
-["Noruega","Senegal"],["Jordania","Argelia"],["Portugal","Uzbekistán"],["Inglaterra","Ghana"],
-["Panamá","Croacia"],["Colombia","RD Congo"],["Suiza","Canadá"],["Bosnia y Herzegovina","Catar"],
-["Escocia","Brasil"],["Marruecos","Haití"],["República Checa","México"],["Sudáfrica","Corea del Sur"],
-["Curazao","Costa de Marfil"],["Ecuador","Alemania"],["Japón","Suecia"],["Túnez","Países Bajos"],
-["Turquía","Estados Unidos"],["Paraguay","Australia"],["Noruega","Francia"],["Senegal","Irak"],
-["Cabo Verde","Arabia Saudita"],["Uruguay","España"],["Egipto","Irán"],["Nueva Zelanda","Bélgica"],
-["Panamá","Inglaterra"],["Croacia","Ghana"],["Colombia","Portugal"],["RD Congo","Uzbekistán"],
-["Argelia","Austria"],["Jordania","Argentina"]
+{id:1,g:"A",h:"México",a:"Sudáfrica"},{id:2,g:"A",h:"Corea del Sur",a:"República Checa"},
+{id:3,g:"B",h:"Canadá",a:"Bosnia y Herzegovina"},{id:4,g:"D",h:"Estados Unidos",a:"Paraguay"},
+{id:5,g:"B",h:"Catar",a:"Suiza"},{id:6,g:"C",h:"Brasil",a:"Marruecos"},
+{id:7,g:"C",h:"Haití",a:"Escocia"},{id:8,g:"D",h:"Australia",a:"Turquía"},
+{id:9,g:"E",h:"Alemania",a:"Curazao"},{id:10,g:"F",h:"Países Bajos",a:"Japón"},
+{id:11,g:"E",h:"Costa de Marfil",a:"Ecuador"},{id:12,g:"F",h:"Suecia",a:"Túnez"},
+{id:13,g:"H",h:"España",a:"Cabo Verde"},{id:14,g:"G",h:"Bélgica",a:"Egipto"},
+{id:15,g:"H",h:"Arabia Saudita",a:"Uruguay"},{id:16,g:"G",h:"Irán",a:"Nueva Zelanda"},
+{id:17,g:"I",h:"Francia",a:"Senegal"},{id:18,g:"I",h:"Irak",a:"Noruega"},
+{id:19,g:"J",h:"Argentina",a:"Argelia"},{id:20,g:"J",h:"Austria",a:"Jordania"},
+{id:21,g:"K",h:"Portugal",a:"RD Congo"},{id:22,g:"L",h:"Inglaterra",a:"Croacia"},
+{id:23,g:"L",h:"Ghana",a:"Panamá"},{id:24,g:"K",h:"Uzbekistán",a:"Colombia"},
+{id:25,g:"A",h:"República Checa",a:"Sudáfrica"},{id:26,g:"B",h:"Suiza",a:"Bosnia y Herzegovina"},
+{id:27,g:"B",h:"Canadá",a:"Catar"},{id:28,g:"A",h:"México",a:"Corea del Sur"},
+{id:29,g:"D",h:"Estados Unidos",a:"Australia"},{id:30,g:"C",h:"Escocia",a:"Marruecos"},
+{id:31,g:"C",h:"Brasil",a:"Haití"},{id:32,g:"D",h:"Turquía",a:"Paraguay"},
+{id:33,g:"F",h:"Países Bajos",a:"Suecia"},{id:34,g:"E",h:"Alemania",a:"Costa de Marfil"},
+{id:35,g:"E",h:"Ecuador",a:"Curazao"},{id:36,g:"F",h:"Túnez",a:"Japón"},
+{id:37,g:"H",h:"España",a:"Arabia Saudita"},{id:38,g:"G",h:"Bélgica",a:"Irán"},
+{id:39,g:"H",h:"Uruguay",a:"Cabo Verde"},{id:40,g:"G",h:"Nueva Zelanda",a:"Egipto"},
+{id:41,g:"J",h:"Argentina",a:"Austria"},{id:42,g:"I",h:"Francia",a:"Irak"},
+{id:43,g:"I",h:"Noruega",a:"Senegal"},{id:44,g:"J",h:"Jordania",a:"Argelia"},
+{id:45,g:"K",h:"Portugal",a:"Uzbekistán"},{id:46,g:"L",h:"Inglaterra",a:"Ghana"},
+{id:47,g:"L",h:"Panamá",a:"Croacia"},{id:48,g:"K",h:"Colombia",a:"RD Congo"},
+{id:49,g:"B",h:"Suiza",a:"Canadá"},{id:50,g:"B",h:"Bosnia y Herzegovina",a:"Catar"},
+{id:51,g:"C",h:"Escocia",a:"Brasil"},{id:52,g:"C",h:"Marruecos",a:"Haití"},
+{id:53,g:"A",h:"República Checa",a:"México"},{id:54,g:"A",h:"Sudáfrica",a:"Corea del Sur"},
+{id:55,g:"E",h:"Curazao",a:"Costa de Marfil"},{id:56,g:"E",h:"Ecuador",a:"Alemania"},
+{id:57,g:"F",h:"Japón",a:"Suecia"},{id:58,g:"F",h:"Túnez",a:"Países Bajos"},
+{id:59,g:"D",h:"Turquía",a:"Estados Unidos"},{id:60,g:"D",h:"Paraguay",a:"Australia"},
+{id:61,g:"I",h:"Noruega",a:"Francia"},{id:62,g:"I",h:"Senegal",a:"Irak"},
+{id:63,g:"H",h:"Cabo Verde",a:"Arabia Saudita"},{id:64,g:"H",h:"Uruguay",a:"España"},
+{id:65,g:"G",h:"Egipto",a:"Irán"},{id:66,g:"G",h:"Nueva Zelanda",a:"Bélgica"},
+{id:67,g:"L",h:"Panamá",a:"Inglaterra"},{id:68,g:"L",h:"Croacia",a:"Ghana"},
+{id:69,g:"K",h:"Colombia",a:"Portugal"},{id:70,g:"K",h:"RD Congo",a:"Uzbekistán"},
+{id:71,g:"J",h:"Argelia",a:"Austria"},{id:72,g:"J",h:"Jordania",a:"Argentina"}
 ];
+const GROUP_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
-// Round of 32 (16 matches): id, placeholder label for each side
 const R32 = [
-  {id:"P73", a:"2º A", b:"2º B"},
+  {id:"P73", a:"1º A", b:"2º B"},
   {id:"P74", a:"1º E", b:"3º A/B/C/D/F"},
   {id:"P75", a:"1º F", b:"2º C"},
   {id:"P76", a:"1º C", b:"2º F"},
@@ -326,225 +227,349 @@ const R32 = [
   {id:"P87", a:"1º K", b:"3º D/E/I/J/L"},
   {id:"P88", a:"2º D", b:"2º G"},
 ];
-// Round of 16 (8): which two R32 winners feed in
 const R16 = [
-  {id:"P89", from:["P74","P77"]},
-  {id:"P90", from:["P73","P75"]},
-  {id:"P91", from:["P76","P78"]},
-  {id:"P92", from:["P79","P80"]},
-  {id:"P93", from:["P83","P84"]},
-  {id:"P94", from:["P81","P82"]},
-  {id:"P95", from:["P86","P88"]},
-  {id:"P96", from:["P85","P87"]},
+  {id:"P89", from:["P74","P77"]},{id:"P90", from:["P73","P75"]},
+  {id:"P91", from:["P76","P78"]},{id:"P92", from:["P79","P80"]},
+  {id:"P93", from:["P83","P84"]},{id:"P94", from:["P81","P82"]},
+  {id:"P95", from:["P86","P88"]},{id:"P96", from:["P85","P87"]},
 ];
-// Quarterfinals (4)
 const QF = [
-  {id:"P97", from:["P89","P90"]},
-  {id:"P98", from:["P93","P94"]},
-  {id:"P99", from:["P91","P92"]},
-  {id:"P100", from:["P95","P96"]},
+  {id:"P97", from:["P89","P90"]},{id:"P98", from:["P93","P94"]},
+  {id:"P99", from:["P91","P92"]},{id:"P100", from:["P95","P96"]},
 ];
-// Semifinals (2)
-const SF = [
-  {id:"P101", from:["P97","P98"]},
-  {id:"P102", from:["P99","P100"]},
-];
+const SF = [{id:"P101", from:["P97","P98"]},{id:"P102", from:["P99","P100"]}];
+const KO_ALL_IDS = [...R32.map(m=>m.id), ...R16.map(m=>m.id), ...QF.map(m=>m.id), ...SF.map(m=>m.id), "P104"];
+
+// ---------- storage (Claude artifact storage, with localStorage fallback for GitHub Pages) ----------
+const hasClaudeStorage = typeof window.storage !== 'undefined' && window.storage && typeof window.storage.get === 'function';
+const localStore = {
+  async get(key){ const raw = localStorage.getItem(key); return raw ? { value: raw } : null; },
+  async set(key, value){ localStorage.setItem(key, value); return { value }; }
+};
+const store = hasClaudeStorage ? window.storage : localStore;
 
 let currentPlayer = PLAYER_IDS[0];
 let playerNames = {};
-let state = {}; // { P73:{a:"Team", b:"Team", winner:"a"/"b"}, ... }
+let myState = { groups:{}, ko:{} };       // current player's picks
+let allPlayerStates = {};                  // {p1: {...}, p2: {...}, ...} for leaderboard
+let realResults = {};                      // { matchId(number): {h,a} } shared real results, group matches only
 
 function displayName(id){ return playerNames[id] || ('Jugador ' + id.slice(1)); }
+function flagOnly(team){ return team ? `<span class="flag">${FLAGS[team]||"🏳️"}</span>` : ''; }
+function flagName(team){ return team ? `<span class="flag">${FLAGS[team]||"🏳️"}</span><span class="name">${team}</span>` : ''; }
 
-function flagSpan(team){
-  return `<span class="flag">${FLAGS[team]||"🏳️"}</span><span class="name">${team}</span>`;
+// ---------------- persistence ----------------
+async function loadNames(){
+  try{ const r = await store.get('player_names', true); playerNames = r && r.value ? JSON.parse(r.value) : {}; }
+  catch(e){ playerNames = {}; }
 }
-function flagOnly(team){
-  return `<span class="flag">${FLAGS[team]||"🏳️"}</span>`;
+async function saveNames(){ try{ await store.set('player_names', JSON.stringify(playerNames), true); }catch(e){} }
+
+async function loadMyState(){
+  try{ const r = await store.get('state_'+currentPlayer, true); myState = r && r.value ? JSON.parse(r.value) : {groups:{},ko:{}}; }
+  catch(e){ myState = {groups:{},ko:{}}; }
+  if(!myState.groups) myState.groups={};
+  if(!myState.ko) myState.ko={};
+}
+async function saveMyState(){
+  try{ await store.set('state_'+currentPlayer, JSON.stringify(myState), true); }catch(e){}
+  allPlayerStates[currentPlayer] = myState;
+}
+async function loadAllPlayerStates(){
+  for(const id of PLAYER_IDS){
+    try{
+      const r = await store.get('state_'+id, true);
+      allPlayerStates[id] = r && r.value ? JSON.parse(r.value) : {groups:{},ko:{}};
+    }catch(e){ allPlayerStates[id] = {groups:{},ko:{}}; }
+  }
+}
+async function loadRealResults(){
+  try{ const r = await store.get('real_results', true); realResults = r && r.value ? JSON.parse(r.value) : {}; }
+  catch(e){ realResults = {}; }
+}
+async function saveRealResults(){ try{ await store.set('real_results', JSON.stringify(realResults), true); }catch(e){} }
+
+// ---------------- standings from a player's group picks ----------------
+function computeStandings(groupsState){
+  const teamsByGroup = {};
+  GROUP_LETTERS.forEach(g=>teamsByGroup[g]=[]);
+  const teamGroup = {};
+  GROUP_MATCHES.forEach(m=>{ teamGroup[m.h]=m.g; teamGroup[m.a]=m.g; });
+  const stats = {};
+  Object.keys(teamGroup).forEach(t=>{ stats[t] = {team:t, g:teamGroup[t], pj:0,w:0,d:0,l:0,gf:0,gc:0}; });
+
+  GROUP_MATCHES.forEach(m=>{
+    const pick = groupsState[m.id];
+    if(!pick || pick.h===null || pick.h===undefined || pick.a===null || pick.a===undefined) return;
+    const h = stats[m.h], a = stats[m.a];
+    h.pj++; a.pj++;
+    h.gf += pick.h; h.gc += pick.a;
+    a.gf += pick.a; a.gc += pick.h;
+    if(pick.h > pick.a){ h.w++; a.l++; }
+    else if(pick.a > pick.h){ a.w++; h.l++; }
+    else { h.d++; a.d++; }
+  });
+
+  const standings = {};
+  GROUP_LETTERS.forEach(g=>{
+    const teams = Object.values(stats).filter(t=>t.g===g).map(t=>({
+      ...t, pts: t.w*3+t.d, dg: t.gf-t.gc
+    }));
+    teams.sort((x,y)=> (y.pts-x.pts) || (y.dg-x.dg) || (y.gf-x.gf) || x.team.localeCompare(y.team,'es'));
+    standings[g] = teams;
+  });
+  return standings;
 }
 
+function resolvePlaceholder(label, standings){
+  const m = label.match(/^(\d)º\s+(.+)$/);
+  if(!m) return null;
+  const pos = parseInt(m[1]);
+  const groupList = m[2].split('/');
+  if(pos===1 || pos===2){
+    const g = groupList[0];
+    const t = standings[g] && standings[g][pos-1];
+    return t ? t.team : null;
+  } else {
+    // best 3rd place among candidate groups (simplified, not the official FIFA slot table)
+    const candidates = groupList.map(g => standings[g] && standings[g][2]).filter(Boolean);
+    if(!candidates.length) return null;
+    candidates.sort((x,y)=> (y.pts-x.pts)||(y.dg-x.dg)||(y.gf-x.gf));
+    return candidates[0].team;
+  }
+}
+
+// ---------------- rendering: group stage ----------------
 function renderGroups(){
   const grid = document.getElementById('groupsGrid');
-  grid.innerHTML = GROUP_MATCHES.map(([h,a])=>`
-    <div class="match">
-      <div class="team">${flagSpan(h)}</div>
-      <span class="vs">v</span>
-      <div class="team">${flagSpan(a)}</div>
-    </div>`).join('');
-}
+  grid.innerHTML = GROUP_MATCHES.map(m=>{
+    const pick = myState.groups[m.id] || {h:null,a:null};
+    const hWin = pick.h!==null && pick.a!==null && pick.h>pick.a;
+    const aWin = pick.h!==null && pick.a!==null && pick.a>pick.h;
+    const draw = pick.h!==null && pick.a!==null && pick.h===pick.a;
+    return `
+    <div class="match" data-id="${m.id}">
+      <div class="row">
+        <div class="teampick ${hWin?'win':''} ${draw?'draw':''}" data-id="${m.id}" data-side="h">
+          ${flagName(m.h)}
+        </div>
+        <span class="vs">v</span>
+        <div class="teampick ${aWin?'win':''} ${draw?'draw':''}" data-id="${m.id}" data-side="a">
+          ${flagName(m.a)}
+        </div>
+      </div>
+      <div class="scorerow">
+        <select data-id="${m.id}" data-side="h">${scoreOptions(pick.h)}</select>
+        <span class="dash">-</span>
+        <select data-id="${m.id}" data-side="a">${scoreOptions(pick.a)}</select>
+        <button class="draw-btn" data-id="${m.id}">empate</button>
+      </div>
+    </div>`;
+  }).join('');
 
-function teamOptions(selected){
-  let opts = '<option value="">— elegí —</option>';
-  ALL_TEAMS.forEach(t=>{
-    opts += `<option value="${t}" ${t===selected?'selected':''}>${t}</option>`;
+  grid.querySelectorAll('.teampick').forEach(el=>{
+    el.addEventListener('click', async ()=>{
+      const id = parseInt(el.dataset.id), side = el.dataset.side;
+      const cur = myState.groups[id] || {h:null,a:null};
+      if(side==='h'){ myState.groups[id] = {h:1,a:0}; } else { myState.groups[id] = {h:0,a:1}; }
+      await saveMyState();
+      renderGroups(); buildBracket(); renderLeaderboard();
+    });
   });
-  return opts;
+  grid.querySelectorAll('.draw-btn').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const id = parseInt(btn.dataset.id);
+      myState.groups[id] = {h:0,a:0};
+      await saveMyState();
+      renderGroups(); buildBracket(); renderLeaderboard();
+    });
+  });
+  grid.querySelectorAll('select').forEach(sel=>{
+    sel.addEventListener('change', async (e)=>{
+      const id = parseInt(e.target.dataset.id), side = e.target.dataset.side;
+      const cur = myState.groups[id] || {h:null,a:null};
+      cur[side] = e.target.value==='' ? null : parseInt(e.target.value);
+      myState.groups[id] = cur;
+      await saveMyState();
+      renderGroups(); buildBracket(); renderLeaderboard();
+    });
+  });
+}
+function scoreOptions(val){
+  let o = `<option value="">-</option>`;
+  for(let i=0;i<=9;i++){ o += `<option value="${i}" ${val===i?'selected':''}>${i}</option>`; }
+  return o;
 }
 
-function getWinnerTeam(matchId){
-  const m = state[matchId];
+// ---------------- rendering: knockout bracket ----------------
+function getKoWinner(matchId){
+  const m = myState.ko[matchId];
   if(!m || !m.winner) return null;
-  return m[m.winner] || null;
-}
-
-function resolveSideLabel(matchId, side, fallbackLabel){
-  // for R16+/QF/SF: side comes from a previous match's winner
-  return null;
+  return m.winner==='a' ? m.teamA : m.teamB;
 }
 
 function buildBracket(){
+  const standings = computeStandings(myState.groups);
   const root = document.getElementById('bracket');
   root.innerHTML = "";
+
+  function koSlot(matchId, teamA, teamB, labelA, labelB){
+    const st = myState.ko[matchId] || {winner:null,h:null,a:null};
+    myState.ko[matchId] = st;
+    st.teamA = teamA; st.teamB = teamB;
+    const div = document.createElement('div');
+    div.className = 'slot';
+    const rowA = `
+      <div class="pickrow ${st.winner==='a'&&teamA?'chosen':''}" data-match="${matchId}" data-side="a" ${teamA?'':'style="opacity:.45;cursor:default;"'}>
+        ${flagOnly(teamA)}<span class="placeholder-label">${teamA || labelA}</span>
+      </div>`;
+    const rowB = `
+      <div class="pickrow ${st.winner==='b'&&teamB?'chosen':''}" data-match="${matchId}" data-side="b" ${teamB?'':'style="opacity:.45;cursor:default;"'}>
+        ${flagOnly(teamB)}<span class="placeholder-label">${teamB || labelB}</span>
+      </div>`;
+    const scoreRow = (teamA && teamB) ? `
+      <div class="bracket-score">
+        <select data-match="${matchId}" data-side="h">${scoreOptions(st.h)}</select>
+        <span class="dash">-</span>
+        <select data-match="${matchId}" data-side="a">${scoreOptions(st.a)}</select>
+      </div>` : '';
+    div.innerHTML = `<div class="pid">${matchId}</div>${rowA}${rowB}${scoreRow}`;
+    return div;
+  }
 
   const col1 = document.createElement('div'); col1.className='bcol';
   col1.innerHTML = '<div class="bracket-col-title">Dieciseisavos</div>';
   R32.forEach(m=>{
-    const st = state[m.id] || (state[m.id]={a:"",b:"",winner:null});
-    const div = document.createElement('div');
-    div.className='slot';
-    div.innerHTML = `
-      <div class="pid">${m.id}</div>
-      <div class="pickrow ${st.winner==='a'?'chosen':''}" data-match="${m.id}" data-side="a">
-        ${st.a?flagOnly(st.a):''}
-        <select data-match="${m.id}" data-side="a">${teamOptions(st.a)}</select>
-        <input type="radio" name="${m.id}" ${st.winner==='a'?'checked':''} data-match="${m.id}" data-side="a">
-      </div>
-      <div class="pickrow ${st.winner==='b'?'chosen':''}" data-match="${m.id}" data-side="b">
-        ${st.b?flagOnly(st.b):''}
-        <select data-match="${m.id}" data-side="b">${teamOptions(st.b)}</select>
-        <input type="radio" name="${m.id}" ${st.winner==='b'?'checked':''} data-match="${m.id}" data-side="b">
-      </div>
-      <div style="font-size:9px;color:var(--muted);margin-top:4px;">${m.a} v ${m.b}</div>
-    `;
-    col1.appendChild(div);
+    const teamA = resolvePlaceholder(m.a, standings);
+    const teamB = resolvePlaceholder(m.b, standings);
+    col1.appendChild(koSlot(m.id, teamA, teamB, m.a, m.b));
   });
   root.appendChild(col1);
 
-  function buildDerivedCol(title, list){
+  function derivedCol(title, list){
     const col = document.createElement('div'); col.className='bcol';
     col.innerHTML = `<div class="bracket-col-title">${title}</div>`;
     list.forEach(m=>{
-      const teamA = getWinnerTeam(m.from[0]);
-      const teamB = getWinnerTeam(m.from[1]);
-      const st = state[m.id] || (state[m.id]={winner:null});
-      st.a = teamA; st.b = teamB;
-      const div = document.createElement('div');
-      div.className='slot';
-      const rowA = `
-        <div class="pickrow ${st.winner==='a' && teamA?'chosen':''}" data-match="${m.id}" data-side="a" data-derived="1">
-          ${teamA?flagOnly(teamA):''}
-          <span class="placeholder-label">${teamA || 'Gan. '+m.from[0]}</span>
-          ${teamA?`<input type="radio" name="${m.id}" ${st.winner==='a'?'checked':''} data-match="${m.id}" data-side="a">`:''}
-        </div>`;
-      const rowB = `
-        <div class="pickrow ${st.winner==='b' && teamB?'chosen':''}" data-match="${m.id}" data-side="b" data-derived="1">
-          ${teamB?flagOnly(teamB):''}
-          <span class="placeholder-label">${teamB || 'Gan. '+m.from[1]}</span>
-          ${teamB?`<input type="radio" name="${m.id}" ${st.winner==='b'?'checked':''} data-match="${m.id}" data-side="b">`:''}
-        </div>`;
-      div.innerHTML = `<div class="pid">${m.id}</div>${rowA}${rowB}`;
-      col.appendChild(div);
+      const teamA = getKoWinner(m.from[0]);
+      const teamB = getKoWinner(m.from[1]);
+      col.appendChild(koSlot(m.id, teamA, teamB, 'Gan. '+m.from[0], 'Gan. '+m.from[1]));
     });
     return col;
   }
+  root.appendChild(derivedCol('Octavos', R16));
+  root.appendChild(derivedCol('Cuartos', QF));
+  root.appendChild(derivedCol('Semifinal', SF));
 
-  root.appendChild(buildDerivedCol('Octavos', R16));
-  root.appendChild(buildDerivedCol('Cuartos', QF));
-  root.appendChild(buildDerivedCol('Semifinal', SF));
-
-  // Final + Bronze column
   const col5 = document.createElement('div'); col5.className='bcol';
   col5.innerHTML = '<div class="bracket-col-title">Gran Final</div>';
 
-  const finalA = getWinnerTeam('P101');
-  const finalB = getWinnerTeam('P102');
-  const finCard = document.createElement('div');
-  finCard.className='final-card';
+  const finalA = getKoWinner('P101'), finalB = getKoWinner('P102');
+  const finCard = document.createElement('div'); finCard.className='final-card';
+  const finSt = myState.ko['P104'] || {winner:null,h:null,a:null}; myState.ko['P104']=finSt;
+  finSt.teamA=finalA; finSt.teamB=finalB;
   finCard.innerHTML = `
     <div class="label">🏆 FINAL</div>
-    <div class="pickrow" style="cursor:default;">${finalA?flagOnly(finalA):''}<span class="placeholder-label">${finalA||'Gan. P101'}</span></div>
-    <div class="pickrow" style="cursor:default;margin-top:6px;">${finalB?flagOnly(finalB):''}<span class="placeholder-label">${finalB||'Gan. P102'}</span></div>
+    <div class="pickrow ${finSt.winner==='a'&&finalA?'chosen':''}" data-match="P104" data-side="a" ${finalA?'':'style="opacity:.45;cursor:default;"'}>
+      ${flagOnly(finalA)}<span class="placeholder-label">${finalA||'Gan. P101'}</span>
+    </div>
+    <div class="pickrow ${finSt.winner==='b'&&finalB?'chosen':''}" data-match="P104" data-side="b" style="margin-top:6px;${finalB?'':'opacity:.45;cursor:default;'}">
+      ${flagOnly(finalB)}<span class="placeholder-label">${finalB||'Gan. P102'}</span>
+    </div>
+    ${(finalA&&finalB)?`<div class="bracket-score"><select data-match="P104" data-side="h">${scoreOptions(finSt.h)}</select><span class="dash">-</span><select data-match="P104" data-side="a">${scoreOptions(finSt.a)}</select></div>`:''}
   `;
 
-  const loserA_101 = (()=>{ const m=state['P101']; if(!m||!m.winner) return null; return m.winner==='a'? m.b : m.a; })();
-  const loserB_102 = (()=>{ const m=state['P102']; if(!m||!m.winner) return null; return m.winner==='a'? m.b : m.a; })();
-  const bronzeCard = document.createElement('div');
-  bronzeCard.className='bronze-card';
+  const loserA = (()=>{ const m=myState.ko['P101']; if(!m||!m.winner) return null; return m.winner==='a'? m.teamB : m.teamA; })();
+  const loserB = (()=>{ const m=myState.ko['P102']; if(!m||!m.winner) return null; return m.winner==='a'? m.teamB : m.teamA; })();
+  const bronzeCard = document.createElement('div'); bronzeCard.className='bronze-card';
   bronzeCard.innerHTML = `
     <div class="label">🥉 TERCER PUESTO</div>
-    <div class="pickrow" style="cursor:default;">${loserA_101?flagOnly(loserA_101):''}<span class="placeholder-label">${loserA_101||'Perd. P101'}</span></div>
-    <div class="pickrow" style="cursor:default;margin-top:6px;">${loserB_102?flagOnly(loserB_102):''}<span class="placeholder-label">${loserB_102||'Perd. P102'}</span></div>
+    <div class="pickrow" style="cursor:default;">${flagOnly(loserA)}<span class="placeholder-label">${loserA||'Perd. P101'}</span></div>
+    <div class="pickrow" style="cursor:default;margin-top:6px;">${flagOnly(loserB)}<span class="placeholder-label">${loserB||'Perd. P102'}</span></div>
   `;
 
   col5.appendChild(bronzeCard);
   col5.appendChild(finCard);
   root.appendChild(col5);
 
-  // wire events
-  root.querySelectorAll('select').forEach(sel=>{
-    sel.addEventListener('change', e=>{
-      const mid = e.target.dataset.match, side = e.target.dataset.side;
-      if(!state[mid]) state[mid]={a:"",b:"",winner:null};
-      state[mid][side] = e.target.value;
-      saveState();
-      buildBracket();
-    });
-  });
-  root.querySelectorAll('input[type=radio]').forEach(r=>{
-    r.addEventListener('change', e=>{
-      const mid = e.target.dataset.match, side = e.target.dataset.side;
-      if(!state[mid]) state[mid]={a:"",b:"",winner:null};
-      state[mid].winner = side;
-      saveState();
-      buildBracket();
-    });
-  });
   root.querySelectorAll('.pickrow[data-match]').forEach(row=>{
-    row.addEventListener('click', e=>{
-      if(e.target.tagName==='SELECT') return;
-      const input = row.querySelector('input[type=radio]');
-      if(input){ input.checked = true; input.dispatchEvent(new Event('change')); }
+    row.addEventListener('click', async ()=>{
+      const mid = row.dataset.match, side = row.dataset.side;
+      const st = myState.ko[mid];
+      if(!st || (side==='a' && !st.teamA) || (side==='b' && !st.teamB)) return;
+      st.winner = side;
+      await saveMyState();
+      buildBracket();
+    });
+  });
+  root.querySelectorAll('.bracket-score select').forEach(sel=>{
+    sel.addEventListener('change', async (e)=>{
+      const mid = e.target.dataset.match, side = e.target.dataset.side;
+      const st = myState.ko[mid] || {winner:null,h:null,a:null};
+      st[side] = e.target.value===''? null : parseInt(e.target.value);
+      myState.ko[mid] = st;
+      await saveMyState();
+      buildBracket();
     });
   });
 }
 
-const hasClaudeStorage = typeof window.storage !== 'undefined' && window.storage && typeof window.storage.get === 'function';
-const localStore = {
-  async get(key){
-    const raw = localStorage.getItem(key);
-    return raw ? { value: raw } : null;
-  },
-  async set(key, value){
-    localStorage.setItem(key, value);
-    return { value };
-  }
-};
-const store = hasClaudeStorage ? window.storage : localStore;
-
-function storageKey(playerId){ return 'bracket_' + playerId; }
-
-async function loadNames(){
-  try{
-    const res = await store.get('player_names', true);
-    playerNames = res && res.value ? JSON.parse(res.value) : {};
-  }catch(err){ playerNames = {}; }
-}
-async function saveNames(){
-  try{ await store.set('player_names', JSON.stringify(playerNames), true); }
-  catch(err){ console.error('storage error', err); }
-}
-
-async function loadState(){
-  try{
-    const res = await store.get(storageKey(currentPlayer), true);
-    state = res && res.value ? JSON.parse(res.value) : {};
-  }catch(err){ state = {}; }
-}
-async function saveState(){
-  try{ await store.set(storageKey(currentPlayer), JSON.stringify(state), true); }
-  catch(err){ console.error('storage error', err); }
+// ---------------- real results admin ----------------
+function renderResultsList(){
+  const list = document.getElementById('resultsList');
+  list.innerHTML = GROUP_MATCHES.map(m=>{
+    const r = realResults[m.id] || {h:'',a:''};
+    return `
+    <div class="results-row">
+      <div class="rname">${flagName(m.h)}</div>
+      <select data-id="${m.id}" data-side="h">${scoreOptions(r.h===''?null:r.h)}</select>
+      <span class="dash">-</span>
+      <select data-id="${m.id}" data-side="a">${scoreOptions(r.a===''?null:r.a)}</select>
+      <div class="rname right">${flagName(m.a)}</div>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('select').forEach(sel=>{
+    sel.addEventListener('change', async (e)=>{
+      const id = e.target.dataset.id, side = e.target.dataset.side;
+      const cur = realResults[id] || {h:'',a:''};
+      cur[side] = e.target.value===''? '' : parseInt(e.target.value);
+      realResults[id] = cur;
+      await saveRealResults();
+      renderLeaderboard();
+    });
+  });
 }
 
+// ---------------- leaderboard ----------------
+function computePoints(playerState){
+  let total = 0;
+  GROUP_MATCHES.forEach(m=>{
+    const real = realResults[m.id];
+    const pick = playerState.groups[m.id];
+    if(!real || real.h===''||real.h===undefined||real.a===''||real.a===undefined) return;
+    if(!pick || pick.h===null||pick.h===undefined||pick.a===null||pick.a===undefined) return;
+    if(pick.h===real.h && pick.a===real.a){ total += 3; }
+    else {
+      const realOutcome = real.h>real.a?'h':(real.a>real.h?'a':'d');
+      const pickOutcome = pick.h>pick.a?'h':(pick.a>pick.h?'a':'d');
+      if(realOutcome===pickOutcome) total += 1;
+    }
+  });
+  return total;
+}
+
+async function renderLeaderboard(){
+  await loadAllPlayerStates();
+  const rows = PLAYER_IDS.map(id=>({
+    id, name: displayName(id), pts: computePoints(allPlayerStates[id] || {groups:{},ko:{}})
+  })).sort((x,y)=>y.pts-x.pts);
+  const table = document.getElementById('leaderTable');
+  table.innerHTML = `
+    <tr><th>#</th><th>Jugador</th><th>Puntos</th></tr>
+    ${rows.map((r,i)=>`<tr class="${i===0&&r.pts>0?'lead':''}"><td>${i+1}</td><td>${r.name}</td><td class="num">${r.pts}</td></tr>`).join('')}
+  `;
+}
+
+// ---------------- tabs ----------------
 function renderTabs(){
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = PLAYER_IDS.map(id=>`
@@ -552,15 +577,13 @@ function renderTabs(){
       <span class="tab-name" data-p="${id}">${displayName(id)}</span>
       <button class="tab-edit" data-p="${id}" title="Cambiar nombre">✏️</button>
     </div>`).join('');
-
   tabs.querySelectorAll('.tab-name').forEach(span=>{
     span.addEventListener('click', async ()=>{
       const id = span.dataset.p;
       if(id !== currentPlayer){
         currentPlayer = id;
-        await loadState();
-        renderTabs();
-        buildBracket();
+        await loadMyState();
+        renderTabs(); renderGroups(); buildBracket();
       }
     });
   });
@@ -568,34 +591,32 @@ function renderTabs(){
     btn.addEventListener('click', async (e)=>{
       e.stopPropagation();
       const id = btn.dataset.p;
-      const current = displayName(id);
-      const nuevo = prompt('Nombre del jugador:', current);
+      const nuevo = prompt('Nombre del jugador:', displayName(id));
       if(nuevo && nuevo.trim()){
         playerNames[id] = nuevo.trim();
         await saveNames();
-        if(id !== currentPlayer){
-          currentPlayer = id;
-          await loadState();
-        }
-        renderTabs();
-        buildBracket();
+        if(id !== currentPlayer){ currentPlayer = id; await loadMyState(); }
+        renderTabs(); renderGroups(); buildBracket(); renderLeaderboard();
       }
     });
   });
 }
 
 document.getElementById('resetBtn').addEventListener('click', async ()=>{
-  state = {};
-  await saveState();
-  buildBracket();
+  myState = {groups:{}, ko:{}};
+  await saveMyState();
+  renderGroups(); buildBracket(); renderLeaderboard();
 });
 
 (async function init(){
-  renderGroups();
   await loadNames();
   renderTabs();
-  await loadState();
+  await loadMyState();
+  renderGroups();
   buildBracket();
+  await loadRealResults();
+  renderResultsList();
+  await renderLeaderboard();
 })();
 </script>
 </body>
