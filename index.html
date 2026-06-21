@@ -111,6 +111,17 @@
   table.leader tr.lead td{background:rgba(244,183,64,.12);}
   table.leader td.num{font-weight:800;}
 
+  .compare-list{max-height:480px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;}
+  table.compare{width:100%;border-collapse:collapse;font-size:11.5px;}
+  table.compare th, table.compare td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap;}
+  table.compare th{position:sticky;top:0;background:#161b28;color:var(--muted);font-weight:700;font-size:10px;
+    text-transform:uppercase;letter-spacing:0.4px;z-index:1;}
+  table.compare td.matchcell{text-align:left;font-weight:600;color:var(--text);}
+  table.compare td.realcell{font-weight:800;color:var(--gold);}
+  table.compare td.hit3{background:rgba(34,197,94,.22);color:#bbf7d0;font-weight:800;}
+  table.compare td.hit1{background:rgba(244,183,64,.18);color:#fde68a;font-weight:700;}
+  table.compare td.locked-row{opacity:.55;}
+
   footer{margin-top:30px;color:var(--muted);font-size:11px;text-align:center;}
   .resetbtn{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 12px;border-radius:999px;
     font-size:11px;cursor:pointer;margin-top:14px;}
@@ -150,6 +161,10 @@
   <h2 class="section">Tabla de resultados y puntos</h2>
   <p class="section-note">3 puntos si acertaste el marcador exacto · 1 punto si acertaste quién ganaba o el empate · 0 si no.</p>
   <table class="leader" id="leaderTable"></table>
+
+  <h2 class="section">Comparar los 5 pronósticos</h2>
+  <p class="section-note">Lo que eligió cada uno en la fase de grupos, partido por partido.</p>
+  <div class="compare-list" id="compareList"></div>
 
   <footer>Hecho para los 5 — cada uno elige su pestaña y arma su pronóstico.</footer>
 
@@ -210,7 +225,6 @@ const GROUP_MATCHES = [
 {id:69,g:"K",h:"Colombia",a:"Portugal"},{id:70,g:"K",h:"RD Congo",a:"Uzbekistán"},
 {id:71,g:"J",h:"Argelia",a:"Austria"},{id:72,g:"J",h:"Jordania",a:"Argentina"}
 ];
-const LOCKED_IDS = new Set(Object.keys(INITIAL_RESULTS).map(Number));
 const GROUP_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
 // Resultados reales ya jugados (11 al 21 de junio) — partidos 1 a 38
@@ -222,6 +236,7 @@ const INITIAL_RESULTS = {
   29:{h:2,a:0}, 30:{h:0,a:1}, 31:{h:3,a:0}, 32:{h:0,a:1}, 33:{h:5,a:1}, 34:{h:2,a:1}, 35:{h:0,a:0},
   36:{h:0,a:4}, 37:{h:4,a:0}, 38:{h:0,a:0}
 };
+const LOCKED_IDS = new Set(Object.keys(INITIAL_RESULTS).map(Number));
 
 const R32 = [
   {id:"P73", a:"1º A", b:"2º B"},
@@ -625,6 +640,41 @@ async function renderLeaderboard(){
     <tr><th>#</th><th>Jugador</th><th>Puntos</th></tr>
     ${rows.map((r,i)=>`<tr class="${i===0&&r.pts>0?'lead':''}"><td>${i+1}</td><td>${r.name}</td><td class="num">${r.pts}</td></tr>`).join('')}
   `;
+  renderCompareTable();
+}
+
+function pickLabel(pick){
+  if(!pick || pick.h===null || pick.h===undefined || pick.a===null || pick.a===undefined) return '<span style="color:var(--muted)">—</span>';
+  return `${pick.h}-${pick.a}`;
+}
+
+function renderCompareTable(){
+  const box = document.getElementById('compareList');
+  const header = `<tr><th>Partido</th><th>Real</th>${PLAYER_IDS.map(id=>`<th>${displayName(id)}</th>`).join('')}</tr>`;
+  const body = GROUP_MATCHES.map(m=>{
+    const real = realResults[m.id];
+    const realLabel = (real && real.h!=='' && real.h!==undefined) ? `${real.h}-${real.a}` : '<span style="color:var(--muted)">—</span>';
+    const cells = PLAYER_IDS.map(id=>{
+      const pick = (allPlayerStates[id] && allPlayerStates[id].groups) ? allPlayerStates[id].groups[m.id] : null;
+      let cls = '';
+      if(real && real.h!=='' && real.h!==undefined && pick && pick.h!==null && pick.h!==undefined){
+        if(pick.h===real.h && pick.a===real.a) cls='hit3';
+        else{
+          const ro = real.h>real.a?'h':(real.a>real.h?'a':'d');
+          const po = pick.h>pick.a?'h':(pick.a>pick.h?'a':'d');
+          if(ro===po) cls='hit1';
+        }
+      }
+      return `<td class="${cls}">${pickLabel(pick)}</td>`;
+    }).join('');
+    const lockedCls = LOCKED_IDS.has(m.id) ? 'locked-row' : '';
+    return `<tr class="${lockedCls}">
+      <td class="matchcell">${FLAGS[m.h]||''} ${m.h} v ${m.a} ${FLAGS[m.a]||''}</td>
+      <td class="realcell">${realLabel}</td>
+      ${cells}
+    </tr>`;
+  }).join('');
+  box.innerHTML = `<table class="compare">${header}${body}</table>`;
 }
 
 // ---------------- tabs ----------------
