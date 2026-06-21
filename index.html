@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>104 Partidos — Mundial 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#090c14;
+    --card:#11151f;
+    --line:#262b3a;
+    --grad1:#7c3aed;
+    --grad2:#06b6d4;
+    --grad3:#fb923c;
+    --grad4:#facc15;
+    --gold:#f4b740;
+    --text:#f5f6fa;
+    --muted:#8a90a3;
+    --win:#1f2a44;
+    --win-border:#3a4566;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding:18px;
+  }
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    border-radius:28px;
+    padding:3px;
+    background:linear-gradient(120deg,var(--grad1),var(--grad2) 35%,var(--grad3) 70%,var(--grad4));
+  }
+  .inner{
+    background:var(--card);
+    border-radius:26px;
+    padding:28px 26px 40px;
+  }
+  header{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+    font-size:clamp(32px,5vw,56px);
+    margin:0;
+    line-height:0.95;
+  }
+  h1 span{color:var(--gold);}
+  .subtitle{color:var(--muted);font-size:13px;margin:0 0 22px;}
+
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:26px;
+  }
+  .tab{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid var(--line);
+    background:#161b28;
+    color:var(--text);
+    padding:7px 8px 7px 16px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:13px;
+    transition:all .15s ease;
+  }
+  .tab:hover{border-color:var(--grad2);}
+  .tab.active{
+    background:linear-gradient(120deg,var(--grad1),var(--grad2));
+    border-color:transparent;
+    color:#fff;
+  }
+  .tab-name{cursor:pointer;}
+  .tab-edit{
+    border:none;
+    background:rgba(255,255,255,.12);
+    color:inherit;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    font-size:11px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .tab-edit:hover{background:rgba(255,255,255,.25);}
+
+  h2.section{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    font-size:20px;
+    letter-spacing:0.5px;
+    margin:30px 0 4px;
+    color:var(--text);
+  }
+  .section-note{color:var(--muted);font-size:12px;margin:0 0 14px;}
+
+  .groups-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px 10px;
+  }
+  @media(max-width:760px){.groups-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){.groups-grid{grid-template-columns:1fr;}}
+
+  .match{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#0e1320;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:7px 10px;
+    font-size:13px;
+  }
+  .match .team{display:flex;align-items:center;gap:7px;min-width:0;}
+  .match .flag{font-size:17px;}
+  .match .vs{
+    font-size:10px;
+    font-weight:800;
+    color:var(--muted);
+    background:#1b2133;
+    padding:2px 7px;
+    border-radius:999px;
+    margin:0 6px;
+  }
+  .match .name{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .bracket-col-title{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--muted);
+    font-weight:700;
+    margin:0 0 8px 4px;
+  }
+  .bracket{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-top:6px;
+  }
+  @media(max-width:980px){.bracket{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.bracket{grid-template-columns:1fr;}}
+
+  .bcol{display:flex;flex-direction:column;gap:10px;}
+  .slot{
+    background:var(--win);
+    border:1px solid var(--win-border);
+    border-radius:12px;
+    padding:8px;
+  }
+  .slot .pid{font-size:10px;color:var(--muted);font-weight:700;margin-bottom:6px;letter-spacing:0.5px;}
+  .pickrow{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#0c1019;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:5px 7px;
+    margin-bottom:5px;
+    cursor:pointer;
+    transition:background .12s ease;
+  }
+  .pickrow:last-child{margin-bottom:0;}
+  .pickrow:hover{background:#161c2c;}
+  .pickrow.chosen{
+    background:linear-gradient(120deg,rgba(124,58,237,.35),rgba(6,182,212,.35));
+    border-color:var(--grad2);
+  }
+  .pickrow .flag{font-size:15px;width:18px;text-align:center;}
+  .pickrow select{
+    background:transparent;
+    border:none;
+    color:var(--text);
+    font-size:12px;
+    font-weight:600;
+    width:100%;
+    cursor:pointer;
+  }
+  .pickrow select:focus{outline:none;}
+  .pickrow .placeholder-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--muted);
+  }
+  .pickrow.chosen .placeholder-label{color:var(--text);}
+  .pickrow input[type=radio]{accent-color:var(--grad2);margin:0;}
+
+  .final-card{
+    grid-column:1/-1;
+    background:linear-gradient(120deg,rgba(244,183,64,.14),rgba(124,58,237,.14));
+    border:1px solid var(--gold);
+    border-radius:14px;
+    padding:14px;
+    margin-top:4px;
+  }
+  .final-card .label{
+    font-family:'Anton',sans-serif;
+    font-size:22px;
+    color:var(--gold);
+    margin-bottom:8px;
+  }
+  .bronze-card{
+    grid-column:1/-1;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px;
+    background:#0e1320;
+  }
+  .bronze-card .label{font-weight:800;font-size:13px;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px;}
+
+  footer{margin-top:30px;color:var(--muted);font-size:11px;text-align:center;}
+  .resetbtn{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--muted);
+    padding:6px 12px;
+    border-radius:999px;
+    font-size:11px;
+    cursor:pointer;
+    margin-top:14px;
+  }
+  .resetbtn:hover{border-color:#ef4444;color:#ef4444;}
+</style>
+</head>
+<body>
+<div class="shell"><div class="inner">
+
+  <header>
+    <h1>104 <span>MATCHES</span></h1>
+  </header>
+  <p class="subtitle">🏆 FIFA WORLD CUP 2026 — Bracket de cada jugador</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <h2 class="section">Fase de grupos</h2>
+  <p class="section-note">Los 72 partidos confirmados (igual para todos — esto no se pronostica, ya está definido).</p>
+  <div class="groups-grid" id="groupsGrid"></div>
+
+  <h2 class="section">Eliminación directa — tu pronóstico</h2>
+  <p class="section-note">Elegí el equipo en cada cruce de Dieciseisavos; el ganador avanza solo a la siguiente ronda. Se guarda automáticamente.</p>
+  <div class="bracket" id="bracket"></div>
+
+  <button class="resetbtn" id="resetBtn">Borrar pronóstico de este jugador</button>
+  <footer>Datos compartidos entre los 5 — cada uno elige su pestaña y arma su bracket.</footer>
+
+</div></div>
+
+<script>
+const FLAGS = {
+  "México":"🇲🇽","Sudáfrica":"🇿🇦","Corea del Sur":"🇰🇷","República Checa":"🇨🇿",
+  "Canadá":"🇨🇦","Bosnia y Herzegovina":"🇧🇦","Catar":"🇶🇦","Suiza":"🇨🇭",
+  "Brasil":"🇧🇷","Marruecos":"🇲🇦","Haití":"🇭🇹","Escocia":"🏴",
+  "Estados Unidos":"🇺🇸","Paraguay":"🇵🇾","Australia":"🇦🇺","Turquía":"🇹🇷",
+  "Alemania":"🇩🇪","Curazao":"🇨🇼","Costa de Marfil":"🇨🇮","Ecuador":"🇪🇨",
+  "Países Bajos":"🇳🇱","Japón":"🇯🇵","Suecia":"🇸🇪","Túnez":"🇹🇳",
+  "Bélgica":"🇧🇪","Egipto":"🇪🇬","Irán":"🇮🇷","Nueva Zelanda":"🇳🇿",
+  "España":"🇪🇸","Cabo Verde":"🇨🇻","Arabia Saudita":"🇸🇦","Uruguay":"🇺🇾",
+  "Francia":"🇫🇷","Senegal":"🇸🇳","Irak":"🇮🇶","Noruega":"🇳🇴",
+  "Argentina":"🇦🇷","Argelia":"🇩🇿","Austria":"🇦🇹","Jordania":"🇯🇴",
+  "Portugal":"🇵🇹","RD Congo":"🇨🇩","Uzbekistán":"🇺🇿","Colombia":"🇨🇴",
+  "Inglaterra":"🏴","Croacia":"🇭🇷","Ghana":"🇬🇭","Panamá":"🇵🇦"
+};
+const ALL_TEAMS = Object.keys(FLAGS).sort((a,b)=>a.localeCompare(b,'es'));
+const PLAYER_IDS = ["p1","p2","p3","p4","p5"];
+
+const GROUP_MATCHES = [
+["México","Sudáfrica"],["Corea del Sur","República Checa"],["Canadá","Bosnia y Herzegovina"],
+["Estados Unidos","Paraguay"],["Catar","Suiza"],["Brasil","Marruecos"],["Haití","Escocia"],
+["Australia","Turquía"],["Alemania","Curazao"],["Países Bajos","Japón"],["Costa de Marfil","Ecuador"],
+["Suecia","Túnez"],["España","Cabo Verde"],["Bélgica","Egipto"],["Arabia Saudita","Uruguay"],
+["Irán","Nueva Zelanda"],["Francia","Senegal"],["Irak","Noruega"],["Argentina","Argelia"],
+["Austria","Jordania"],["Portugal","RD Congo"],["Inglaterra","Croacia"],["Ghana","Panamá"],
+["Uzbekistán","Colombia"],["República Checa","Sudáfrica"],["Suiza","Bosnia y Herzegovina"],
+["Canadá","Catar"],["México","Corea del Sur"],["Estados Unidos","Australia"],["Escocia","Marruecos"],
+["Brasil","Haití"],["Turquía","Paraguay"],["Países Bajos","Suecia"],["Alemania","Costa de Marfil"],
+["Ecuador","Curazao"],["Túnez","Japón"],["España","Arabia Saudita"],["Bélgica","Irán"],
+["Uruguay","Cabo Verde"],["Nueva Zelanda","Egipto"],["Argentina","Austria"],["Francia","Irak"],
+["Noruega","Senegal"],["Jordania","Argelia"],["Portugal","Uzbekistán"],["Inglaterra","Ghana"],
+["Panamá","Croacia"],["Colombia","RD Congo"],["Suiza","Canadá"],["Bosnia y Herzegovina","Catar"],
+["Escocia","Brasil"],["Marruecos","Haití"],["República Checa","México"],["Sudáfrica","Corea del Sur"],
+["Curazao","Costa de Marfil"],["Ecuador","Alemania"],["Japón","Suecia"],["Túnez","Países Bajos"],
+["Turquía","Estados Unidos"],["Paraguay","Australia"],["Noruega","Francia"],["Senegal","Irak"],
+["Cabo Verde","Arabia Saudita"],["Uruguay","España"],["Egipto","Irán"],["Nueva Zelanda","Bélgica"],
+["Panamá","Inglaterra"],["Croacia","Ghana"],["Colombia","Portugal"],["RD Congo","Uzbekistán"],
+["Argelia","Austria"],["Jordania","Argentina"]
+];
+
+// Round of 32 (16 matches): id, placeholder label for each side
+const R32 = [
+  {id:"P73", a:"2º A", b:"2º B"},
+  {id:"P74", a:"1º E", b:"3º A/B/C/D/F"},
+  {id:"P75", a:"1º F", b:"2º C"},
+  {id:"P76", a:"1º C", b:"2º F"},
+  {id:"P77", a:"1º I", b:"3º C/D/F/G/H"},
+  {id:"P78", a:"2º E", b:"2º I"},
+  {id:"P79", a:"1º A", b:"3º C/E/F/H/I"},
+  {id:"P80", a:"1º L", b:"3º E/H/I/J/K"},
+  {id:"P81", a:"1º D", b:"3º B/E/F/I/J"},
+  {id:"P82", a:"1º G", b:"3º A/E/H/I/J"},
+  {id:"P83", a:"2º K", b:"2º L"},
+  {id:"P84", a:"1º H", b:"2º J"},
+  {id:"P85", a:"1º B", b:"3º E/F/G/I/J"},
+  {id:"P86", a:"1º J", b:"2º H"},
+  {id:"P87", a:"1º K", b:"3º D/E/I/J/L"},
+  {id:"P88", a:"2º D", b:"2º G"},
+];
+// Round of 16 (8): which two R32 winners feed in
+const R16 = [
+  {id:"P89", from:["P74","P77"]},
+  {id:"P90", from:["P73","P75"]},
+  {id:"P91", from:["P76","P78"]},
+  {id:"P92", from:["P79","P80"]},
+  {id:"P93", from:["P83","P84"]},
+  {id:"P94", from:["P81","P82"]},
+  {id:"P95", from:["P86","P88"]},
+  {id:"P96", from:["P85","P87"]},
+];
+// Quarterfinals (4)
+const QF = [
+  {id:"P97", from:["P89","P90"]},
+  {id:"P98", from:["P93","P94"]},
+  {id:"P99", from:["P91","P92"]},
+  {id:"P100", from:["P95","P96"]},
+];
+// Semifinals (2)
+const SF = [
+  {id:"P101", from:["P97","P98"]},
+  {id:"P102", from:["P99","P100"]},
+];
+
+let currentPlayer = PLAYER_IDS[0];
+let playerNames = {};
+let state = {}; // { P73:{a:"Team", b:"Team", winner:"a"/"b"}, ... }
+
+function displayName(id){ return playerNames[id] || ('Jugador ' + id.slice(1)); }
+
+function flagSpan(team){
+  return `<span class="flag">${FLAGS[team]||"🏳️"}</span><span class="name">${team}</span>`;
+}
+function flagOnly(team){
+  return `<span class="flag">${FLAGS[team]||"🏳️"}</span>`;
+}
+
+function renderGroups(){
+  const grid = document.getElementById('groupsGrid');
+  grid.innerHTML = GROUP_MATCHES.map(([h,a])=>`
+    <div class="match">
+      <div class="team">${flagSpan(h)}</div>
+      <span class="vs">v</span>
+      <div class="team">${flagSpan(a)}</div>
+    </div>`).join('');
+}
+
+function teamOptions(selected){
+  let opts = '<option value="">— elegí —</option>';
+  ALL_TEAMS.forEach(t=>{
+    opts += `<option value="${t}" ${t===selected?'selected':''}>${t}</option>`;
+  });
+  return opts;
+}
+
+function getWinnerTeam(matchId){
+  const m = state[matchId];
+  if(!m || !m.winner) return null;
+  return m[m.winner] || null;
+}
+
+function resolveSideLabel(matchId, side, fallbackLabel){
+  // for R16+/QF/SF: side comes from a previous match's winner
+  return null;
+}
+
+function buildBracket(){
+  const root = document.getElementById('bracket');
+  root.innerHTML = "";
+
+  const col1 = document.createElement('div'); col1.className='bcol';
+  col1.innerHTML = '<div class="bracket-col-title">Dieciseisavos</div>';
+  R32.forEach(m=>{
+    const st = state[m.id] || (state[m.id]={a:"",b:"",winner:null});
+    const div = document.createElement('div');
+    div.className='slot';
+    div.innerHTML = `
+      <div class="pid">${m.id}</div>
+      <div class="pickrow ${st.winner==='a'?'chosen':''}" data-match="${m.id}" data-side="a">
+        ${st.a?flagOnly(st.a):''}
+        <select data-match="${m.id}" data-side="a">${teamOptions(st.a)}</select>
+        <input type="radio" name="${m.id}" ${st.winner==='a'?'checked':''} data-match="${m.id}" data-side="a">
+      </div>
+      <div class="pickrow ${st.winner==='b'?'chosen':''}" data-match="${m.id}" data-side="b">
+        ${st.b?flagOnly(st.b):''}
+        <select data-match="${m.id}" data-side="b">${teamOptions(st.b)}</select>
+        <input type="radio" name="${m.id}" ${st.winner==='b'?'checked':''} data-match="${m.id}" data-side="b">
+      </div>
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;">${m.a} v ${m.b}</div>
+    `;
+    col1.appendChild(div);
+  });
+  root.appendChild(col1);
+
+  function buildDerivedCol(title, list){
+    const col = document.createElement('div'); col.className='bcol';
+    col.innerHTML = `<div class="bracket-col-title">${title}</div>`;
+    list.forEach(m=>{
+      const teamA = getWinnerTeam(m.from[0]);
+      const teamB = getWinnerTeam(m.from[1]);
+      const st = state[m.id] || (state[m.id]={winner:null});
+      st.a = teamA; st.b = teamB;
+      const div = document.createElement('div');
+      div.className='slot';
+      const rowA = `
+        <div class="pickrow ${st.winner==='a' && teamA?'chosen':''}" data-match="${m.id}" data-side="a" data-derived="1">
+          ${teamA?flagOnly(teamA):''}
+          <span class="placeholder-label">${teamA || 'Gan. '+m.from[0]}</span>
+          ${teamA?`<input type="radio" name="${m.id}" ${st.winner==='a'?'checked':''} data-match="${m.id}" data-side="a">`:''}
+        </div>`;
+      const rowB = `
+        <div class="pickrow ${st.winner==='b' && teamB?'chosen':''}" data-match="${m.id}" data-side="b" data-derived="1">
+          ${teamB?flagOnly(teamB):''}
+          <span class="placeholder-label">${teamB || 'Gan. '+m.from[1]}</span>
+          ${teamB?`<input type="radio" name="${m.id}" ${st.winner==='b'?'checked':''} data-match="${m.id}" data-side="b">`:''}
+        </div>`;
+      div.innerHTML = `<div class="pid">${m.id}</div>${rowA}${rowB}`;
+      col.appendChild(div);
+    });
+    return col;
+  }
+
+  root.appendChild(buildDerivedCol('Octavos', R16));
+  root.appendChild(buildDerivedCol('Cuartos', QF));
+  root.appendChild(buildDerivedCol('Semifinal', SF));
+
+  // Final + Bronze column
+  const col5 = document.createElement('div'); col5.className='bcol';
+  col5.innerHTML = '<div class="bracket-col-title">Gran Final</div>';
+
+  const finalA = getWinnerTeam('P101');
+  const finalB = getWinnerTeam('P102');
+  const finCard = document.createElement('div');
+  finCard.className='final-card';
+  finCard.innerHTML = `
+    <div class="label">🏆 FINAL</div>
+    <div class="pickrow" style="cursor:default;">${finalA?flagOnly(finalA):''}<span class="placeholder-label">${finalA||'Gan. P101'}</span></div>
+    <div class="pickrow" style="cursor:default;margin-top:6px;">${finalB?flagOnly(finalB):''}<span class="placeholder-label">${finalB||'Gan. P102'}</span></div>
+  `;
+
+  const loserA_101 = (()=>{ const m=state['P101']; if(!m||!m.winner) return null; return m.winner==='a'? m.b : m.a; })();
+  const loserB_102 = (()=>{ const m=state['P102']; if(!m||!m.winner) return null; return m.winner==='a'? m.b : m.a; })();
+  const bronzeCard = document.createElement('div');
+  bronzeCard.className='bronze-card';
+  bronzeCard.innerHTML = `
+    <div class="label">🥉 TERCER PUESTO</div>
+    <div class="pickrow" style="cursor:default;">${loserA_101?flagOnly(loserA_101):''}<span class="placeholder-label">${loserA_101||'Perd. P101'}</span></div>
+    <div class="pickrow" style="cursor:default;margin-top:6px;">${loserB_102?flagOnly(loserB_102):''}<span class="placeholder-label">${loserB_102||'Perd. P102'}</span></div>
+  `;
+
+  col5.appendChild(bronzeCard);
+  col5.appendChild(finCard);
+  root.appendChild(col5);
+
+  // wire events
+  root.querySelectorAll('select').forEach(sel=>{
+    sel.addEventListener('change', e=>{
+      const mid = e.target.dataset.match, side = e.target.dataset.side;
+      if(!state[mid]) state[mid]={a:"",b:"",winner:null};
+      state[mid][side] = e.target.value;
+      saveState();
+      buildBracket();
+    });
+  });
+  root.querySelectorAll('input[type=radio]').forEach(r=>{
+    r.addEventListener('change', e=>{
+      const mid = e.target.dataset.match, side = e.target.dataset.side;
+      if(!state[mid]) state[mid]={a:"",b:"",winner:null};
+      state[mid].winner = side;
+      saveState();
+      buildBracket();
+    });
+  });
+  root.querySelectorAll('.pickrow[data-match]').forEach(row=>{
+    row.addEventListener('click', e=>{
+      if(e.target.tagName==='SELECT') return;
+      const input = row.querySelector('input[type=radio]');
+      if(input){ input.checked = true; input.dispatchEvent(new Event('change')); }
+    });
+  });
+}
+
+const hasClaudeStorage = typeof window.storage !== 'undefined' && window.storage && typeof window.storage.get === 'function';
+const localStore = {
+  async get(key){
+    const raw = localStorage.getItem(key);
+    return raw ? { value: raw } : null;
+  },
+  async set(key, value){
+    localStorage.setItem(key, value);
+    return { value };
+  }
+};
+const store = hasClaudeStorage ? window.storage : localStore;
+
+function storageKey(playerId){ return 'bracket_' + playerId; }
+
+async function loadNames(){
+  try{
+    const res = await store.get('player_names', true);
+    playerNames = res && res.value ? JSON.parse(res.value) : {};
+  }catch(err){ playerNames = {}; }
+}
+async function saveNames(){
+  try{ await store.set('player_names', JSON.stringify(playerNames), true); }
+  catch(err){ console.error('storage error', err); }
+}
+
+async function loadState(){
+  try{
+    const res = await store.get(storageKey(currentPlayer), true);
+    state = res && res.value ? JSON.parse(res.value) : {};
+  }catch(err){ state = {}; }
+}
+async function saveState(){
+  try{ await store.set(storageKey(currentPlayer), JSON.stringify(state), true); }
+  catch(err){ console.error('storage error', err); }
+}
+
+function renderTabs(){
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = PLAYER_IDS.map(id=>`
+    <div class="tab ${id===currentPlayer?'active':''}" data-p="${id}">
+      <span class="tab-name" data-p="${id}">${displayName(id)}</span>
+      <button class="tab-edit" data-p="${id}" title="Cambiar nombre">✏️</button>
+    </div>`).join('');
+
+  tabs.querySelectorAll('.tab-name').forEach(span=>{
+    span.addEventListener('click', async ()=>{
+      const id = span.dataset.p;
+      if(id !== currentPlayer){
+        currentPlayer = id;
+        await loadState();
+        renderTabs();
+        buildBracket();
+      }
+    });
+  });
+  tabs.querySelectorAll('.tab-edit').forEach(btn=>{
+    btn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      const id = btn.dataset.p;
+      const current = displayName(id);
+      const nuevo = prompt('Nombre del jugador:', current);
+      if(nuevo && nuevo.trim()){
+        playerNames[id] = nuevo.trim();
+        await saveNames();
+        if(id !== currentPlayer){
+          currentPlayer = id;
+          await loadState();
+        }
+        renderTabs();
+        buildBracket();
+      }
+    });
+  });
+}
+
+document.getElementById('resetBtn').addEventListener('click', async ()=>{
+  state = {};
+  await saveState();
+  buildBracket();
+});
+
+(async function init(){
+  renderGroups();
+  await loadNames();
+  renderTabs();
+  await loadState();
+  buildBracket();
+})();
+</script>
+</body>
+</html>
