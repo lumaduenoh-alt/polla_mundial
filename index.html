@@ -67,6 +67,9 @@
   .draw-btn{font-size:10px;color:var(--muted);background:transparent;border:1px dashed var(--line);border-radius:999px;
     padding:2px 8px;cursor:pointer;margin-left:4px;}
   .draw-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .match.locked{opacity:.92;}
+  .lockedscore{display:inline-block;width:24px;text-align:center;font-weight:800;font-size:13px;color:var(--text);}
+  .lock-tag{font-size:9px;color:var(--muted);margin-left:6px;letter-spacing:0.3px;}
 
   .bracket-col-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:700;margin:0 0 8px 4px;}
   .bracket{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:6px;}
@@ -207,7 +210,18 @@ const GROUP_MATCHES = [
 {id:69,g:"K",h:"Colombia",a:"Portugal"},{id:70,g:"K",h:"RD Congo",a:"Uzbekistán"},
 {id:71,g:"J",h:"Argelia",a:"Austria"},{id:72,g:"J",h:"Jordania",a:"Argentina"}
 ];
+const LOCKED_IDS = new Set(Object.keys(INITIAL_RESULTS).map(Number));
 const GROUP_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+
+// Resultados reales ya jugados (11 al 21 de junio) — partidos 1 a 38
+const INITIAL_RESULTS = {
+  1:{h:2,a:0}, 2:{h:2,a:1}, 3:{h:1,a:1}, 4:{h:4,a:1}, 5:{h:1,a:1}, 6:{h:1,a:1}, 7:{h:0,a:1},
+  8:{h:2,a:0}, 9:{h:7,a:1}, 10:{h:2,a:2}, 11:{h:1,a:0}, 12:{h:5,a:1}, 13:{h:0,a:0}, 14:{h:1,a:1},
+  15:{h:1,a:1}, 16:{h:2,a:2}, 17:{h:3,a:1}, 18:{h:1,a:4}, 19:{h:3,a:0}, 20:{h:3,a:1}, 21:{h:1,a:1},
+  22:{h:4,a:2}, 23:{h:1,a:0}, 24:{h:1,a:3}, 25:{h:1,a:1}, 26:{h:4,a:1}, 27:{h:6,a:0}, 28:{h:1,a:0},
+  29:{h:2,a:0}, 30:{h:0,a:1}, 31:{h:3,a:0}, 32:{h:0,a:1}, 33:{h:5,a:1}, 34:{h:2,a:1}, 35:{h:0,a:0},
+  36:{h:0,a:4}, 37:{h:4,a:0}, 38:{h:0,a:0}
+};
 
 const R32 = [
   {id:"P73", a:"1º A", b:"2º B"},
@@ -289,6 +303,30 @@ async function loadRealResults(){
 }
 async function saveRealResults(){ try{ await store.set('real_results', JSON.stringify(realResults), true); }catch(e){} }
 
+async function seedInitialResultsIfNeeded(){
+  let already = false;
+  try{ const r = await store.get('seed_applied_v2', true); already = r && r.value === '1'; }catch(e){ already = false; }
+  if(already) return;
+
+  Object.keys(INITIAL_RESULTS).forEach(id=>{ realResults[id] = {...INITIAL_RESULTS[id]}; });
+  await saveRealResults();
+
+  for(const pid of PLAYER_IDS){
+    let st;
+    try{
+      const r = await store.get('state_'+pid, true);
+      st = r && r.value ? JSON.parse(r.value) : {groups:{},ko:{}};
+    }catch(e){ st = {groups:{},ko:{}}; }
+    if(!st.groups) st.groups = {};
+    if(!st.ko) st.ko = {};
+    Object.keys(INITIAL_RESULTS).forEach(idStr=>{
+      st.groups[parseInt(idStr)] = {...INITIAL_RESULTS[idStr]};
+    });
+    try{ await store.set('state_'+pid, JSON.stringify(st), true); }catch(e){}
+  }
+  try{ await store.set('seed_applied_v2', '1', true); }catch(e){}
+}
+
 // ---------------- standings from a player's group picks ----------------
 function computeStandings(groupsState){
   const teamsByGroup = {};
@@ -344,9 +382,30 @@ function renderGroups(){
   const grid = document.getElementById('groupsGrid');
   grid.innerHTML = GROUP_MATCHES.map(m=>{
     const pick = myState.groups[m.id] || {h:null,a:null};
+    const locked = LOCKED_IDS.has(m.id);
     const hWin = pick.h!==null && pick.a!==null && pick.h>pick.a;
     const aWin = pick.h!==null && pick.a!==null && pick.a>pick.h;
     const draw = pick.h!==null && pick.a!==null && pick.h===pick.a;
+    if(locked){
+      return `
+      <div class="match locked" data-id="${m.id}">
+        <div class="row">
+          <div class="teampick ${hWin?'win':''} ${draw?'draw':''}" style="cursor:default;">
+            ${flagName(m.h)}
+          </div>
+          <span class="vs">v</span>
+          <div class="teampick ${aWin?'win':''} ${draw?'draw':''}" style="cursor:default;">
+            ${flagName(m.a)}
+          </div>
+        </div>
+        <div class="scorerow">
+          <span class="lockedscore">${pick.h ?? '-'}</span>
+          <span class="dash">-</span>
+          <span class="lockedscore">${pick.a ?? '-'}</span>
+          <span class="lock-tag">🔒 jugado</span>
+        </div>
+      </div>`;
+    }
     return `
     <div class="match" data-id="${m.id}">
       <div class="row">
@@ -367,10 +426,9 @@ function renderGroups(){
     </div>`;
   }).join('');
 
-  grid.querySelectorAll('.teampick').forEach(el=>{
+  grid.querySelectorAll('.teampick[data-id]').forEach(el=>{
     el.addEventListener('click', async ()=>{
       const id = parseInt(el.dataset.id), side = el.dataset.side;
-      const cur = myState.groups[id] || {h:null,a:null};
       if(side==='h'){ myState.groups[id] = {h:1,a:0}; } else { myState.groups[id] = {h:0,a:1}; }
       await saveMyState();
       renderGroups(); buildBracket(); renderLeaderboard();
@@ -384,7 +442,7 @@ function renderGroups(){
       renderGroups(); buildBracket(); renderLeaderboard();
     });
   });
-  grid.querySelectorAll('select').forEach(sel=>{
+  grid.querySelectorAll('.scorerow select').forEach(sel=>{
     sel.addEventListener('change', async (e)=>{
       const id = parseInt(e.target.dataset.id), side = e.target.dataset.side;
       const cur = myState.groups[id] || {h:null,a:null};
@@ -603,13 +661,16 @@ function renderTabs(){
 }
 
 document.getElementById('resetBtn').addEventListener('click', async ()=>{
-  myState = {groups:{}, ko:{}};
+  const keepLocked = {};
+  LOCKED_IDS.forEach(id=>{ if(myState.groups[id]) keepLocked[id] = myState.groups[id]; });
+  myState = {groups:keepLocked, ko:{}};
   await saveMyState();
   renderGroups(); buildBracket(); renderLeaderboard();
 });
 
 (async function init(){
   await loadNames();
+  await seedInitialResultsIfNeeded();
   renderTabs();
   await loadMyState();
   renderGroups();
