@@ -374,21 +374,69 @@ function computeStandings(groupsState){
   return standings;
 }
 
-function resolvePlaceholder(label, standings){
+// Computes ranked list of best 8 third-place teams across all 12 groups
+function computeBestThirds(standings){
+  const thirds = GROUP_LETTERS.map(g => {
+    const t = standings[g] && standings[g][2];
+    return t ? {...t} : null;
+  }).filter(Boolean);
+  thirds.sort((x,y)=> (y.pts-x.pts)||(y.dg-x.dg)||(y.gf-x.gf)||x.team.localeCompare(y.team,'es'));
+  return thirds.slice(0,8);
+}
+
+// The 8 third-place slots in R32, and which groups they cannot come from (same-group protection)
+const THIRD_SLOTS = ["P74","P77","P79","P80","P81","P82","P85","P87"];
+const THIRD_SLOT_GROUPS = {
+  "P74": ["A","B","C","D","F"],
+  "P77": ["C","D","F","G","H"],
+  "P79": ["C","E","F","H","I"],
+  "P80": ["E","H","I","J","K"],
+  "P81": ["B","E","F","I","J"],
+  "P82": ["A","E","H","I","J"],
+  "P85": ["E","F","G","I","J"],
+  "P87": ["D","E","I","J","L"],
+};
+
+// Assigns best 8 thirds to slots (greedy, best-first, with same-group protection)
+function assignThirdsToSlots(bestThirds){
+  const assigned = {};
+  const usedTeams = new Set();
+  // First pass: respect same-group protection
+  for(const slot of THIRD_SLOTS){
+    const forbidden = THIRD_SLOT_GROUPS[slot] || [];
+    for(const t of bestThirds){
+      if(usedTeams.has(t.team)) continue;
+      if(!forbidden.includes(t.g)){
+        assigned[slot] = t.team;
+        usedTeams.add(t.team);
+        break;
+      }
+    }
+  }
+  // Second pass: fill remaining slots ignoring protection
+  for(const slot of THIRD_SLOTS){
+    if(assigned[slot]) continue;
+    for(const t of bestThirds){
+      if(!usedTeams.has(t.team)){
+        assigned[slot] = t.team;
+        usedTeams.add(t.team);
+        break;
+      }
+    }
+  }
+  return assigned;
+}
+
+function resolvePlaceholder(label, standings, thirdAssignments, matchId){
   const m = label.match(/^(\d)º\s+(.+)$/);
   if(!m) return null;
   const pos = parseInt(m[1]);
-  const groupList = m[2].split('/');
   if(pos===1 || pos===2){
-    const g = groupList[0];
+    const g = label.match(/^\d+º\s+(\w+)/)[1];
     const t = standings[g] && standings[g][pos-1];
     return t ? t.team : null;
   } else {
-    // best 3rd place among candidate groups (simplified, not the official FIFA slot table)
-    const candidates = groupList.map(g => standings[g] && standings[g][2]).filter(Boolean);
-    if(!candidates.length) return null;
-    candidates.sort((x,y)=> (y.pts-x.pts)||(y.dg-x.dg)||(y.gf-x.gf));
-    return candidates[0].team;
+    return (thirdAssignments && thirdAssignments[matchId]) || null;
   }
 }
 
@@ -483,6 +531,8 @@ function getKoWinner(matchId){
 
 function buildBracket(){
   const standings = computeStandings(myState.groups);
+  const bestThirds = computeBestThirds(standings);
+  const thirdAssignments = assignThirdsToSlots(bestThirds);
   const root = document.getElementById('bracket');
   root.innerHTML = "";
 
@@ -513,8 +563,8 @@ function buildBracket(){
   const col1 = document.createElement('div'); col1.className='bcol';
   col1.innerHTML = '<div class="bracket-col-title">Dieciseisavos</div>';
   R32.forEach(m=>{
-    const teamA = resolvePlaceholder(m.a, standings);
-    const teamB = resolvePlaceholder(m.b, standings);
+    const teamA = resolvePlaceholder(m.a, standings, thirdAssignments, m.id);
+    const teamB = resolvePlaceholder(m.b, standings, thirdAssignments, m.id);
     col1.appendChild(koSlot(m.id, teamA, teamB, m.a, m.b));
   });
   root.appendChild(col1);
